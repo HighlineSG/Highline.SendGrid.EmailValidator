@@ -1,0 +1,9 @@
+Highline\SendGrid\EmailValidator\SendGrid\SendGridService:
+  properties:
+    cache:
+      object:
+        factoryObjectName: Neos\Flow\Cache\CacheManager
+        factoryMethodName: getCache
+        arguments:
+          1:
+            value: Highline_SendGrid_EmailValidator
