@@ -19,11 +19,17 @@ class EmailValidator extends AbstractValidator
      */
     public function isValid($value)
     {
+        if (filter_var($value, FILTER_VALIDATE_EMAIL) === false) {
+            $this->addError('Please specify a valid email address.', 1581746584);
+            return;
+        }
+
         $result = $this->sendGridService->validateEmail($value);
 
         if ($result['verdict'] === 'Risky' || $result['verdict'] === 'Invalid') {
             if (isset($result['suggestion'])) {
-                $this->addError('Did you mean ' . $result['local'] . '@' . $result['suggestion'], 1581746055);
+                $suggestedEmail = $result['local'] . '@' . $result['suggestion'];
+                $this->addError('Did you mean %1$s', 1581746055, [$suggestedEmail]);
             } else {
                 $this->addError('Please specify a valid email address.', 1581746584);
             }
